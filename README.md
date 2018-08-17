@@ -56,6 +56,8 @@ The reasons behind choosing Cypress are:
 * fast and reliable
 * supports asynchronous operations automatically
 
+Before you start it's worth taking a quick look at this page: [Why Cypress?](https://docs.cypress.io/guides/overview/why-cypress.html). It helps to understand the whole idea, especially if you watch the videos.
+
 Running tests
 -
 Run the following command from the console
