@@ -32,7 +32,7 @@ describe('Summary', () => {
     cy.contains(this.deliveryMethods[1].price);
   });
 
-  it.only('should calculate price correctly', function() {
+  it('should calculate price correctly', function() {
     let deliveryCost;
     let itemsPrice = 0;
     let overallPrice;
