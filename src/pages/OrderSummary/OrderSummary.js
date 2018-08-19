@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import { List, Button } from "antd";
-import { Redirect } from "react-router-dom";
-import { Layout, CartItem } from "../../components";
-import { find } from "lodash";
-import deliveryMethods from "../../data/deliveryMethods.json";
-import countries from "../../data/countries.json";
+import React, { Component } from 'react';
+import { List, Button } from 'antd';
+import { Redirect } from 'react-router-dom';
+import { Layout, CartItem } from '../../components';
+import { find } from 'lodash';
+import deliveryMethods from '../../data/deliveryMethods.json';
+import countries from '../../data/countries.json';
 
 class OrderSummary extends Component {
   onSubmitOrder = () => {
     this.props.submitOrder();
-    this.props.history.push("/");
+    this.props.history.push('/');
   };
 
   getOrderTotal() {
@@ -40,8 +40,8 @@ class OrderSummary extends Component {
       deliveryMethod
     } = order;
 
-    if (!orderNumber || typeof orderNumber === "undefined") {
-      return <Redirect to="/" />;
+    if (!orderNumber || typeof orderNumber === 'undefined') {
+      return <Redirect to="/"/>;
     }
 
     const selectedCountry = find(countries, { value: deliveryAddress.country });
@@ -50,83 +50,94 @@ class OrderSummary extends Component {
     });
 
     return (
-      <Layout cartSummary={cartSummary}>
-        <h2>Order #{orderNumber} has been placed</h2>
+      <Layout cartSummary={ cartSummary }>
+        <div data-test-id="order-summary">
 
-        <List
-          className="demo-loadmore-list"
-          itemLayout="horizontal"
-          dataSource={products}
-          renderItem={item => (
-            <CartItem
-              product={item.product}
-              quantity={item.quantity}
-              readOnly
-            />
-          )}
-        />
-        <div
-          style={{
-            marginTop: 12,
-          }}
-        >
-          <p>
-            <strong>Delivery address</strong>
-          </p>
-          <p>
-            Full name:&nbsp;
-            <strong>{deliveryAddress.fullname}</strong>
-          </p>
-          <p>
-            Street:&nbsp;
-            <strong>{deliveryAddress.street}</strong>
-          </p>
-          <p>
-            City:&nbsp;
-            <strong>{deliveryAddress.city}</strong>
-          </p>
-          <p>
-            Country:&nbsp;
-            <strong>{selectedCountry.label}</strong>
-          </p>
-        </div>
-        <div
-          style={{
-            marginTop: 12,
-          }}
-        >
-          <p>
-            <strong>Shipping method</strong>
-          </p>
-          <p>{selectedDeliveryMethod.name}</p>
-          <p>
-            Delivery cost: {selectedDeliveryMethod.price}
-            zł
-          </p>
-        </div>
-        <div
-          style={{
-            marginTop: 12,
-          }}
-        >
-          <p>
-            <strong>
-              Your order total: {this.getOrderTotal()}
+          <h2>Order #{ orderNumber } has been placed</h2>
+
+          <List
+            className="demo-loadmore-list"
+            itemLayout="horizontal"
+            dataSource={ products }
+            renderItem={ item => (
+              <CartItem
+                product={ item.product }
+                quantity={ item.quantity }
+                readOnly
+              />
+            ) }
+          />
+          <div
+            data-test-id="order-summary-delivery-address"
+            style={ {
+              marginTop: 12
+            } }
+          >
+            <p>
+              <strong>Delivery address</strong>
+            </p>
+            <p>
+              Full name:&nbsp;
+              <strong>{ deliveryAddress.fullname }</strong>
+            </p>
+            <p>
+              Street:&nbsp;
+              <strong>{ deliveryAddress.street }</strong>
+            </p>
+            <p>
+              City:&nbsp;
+              <strong>{ deliveryAddress.city }</strong>
+            </p>
+            <p>
+              Country:&nbsp;
+              <strong>{ selectedCountry.label }</strong>
+            </p>
+          </div>
+          <div
+            data-test-id="order-summary-delivery-method"
+            style={ {
+              marginTop: 12
+            } }
+          >
+            <p>
+              <strong>Shipping method</strong>
+            </p>
+            <p>{ selectedDeliveryMethod.name }</p>
+            <p>
+              Delivery cost:
+              <span data-test-id="order-summary-delivery-method-price">
+                { selectedDeliveryMethod.price }
+              </span>
               zł
-            </strong>
-          </p>
-        </div>
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: 12,
-            height: 32,
-            lineHeight: "32px"
-          }}
-        >
-          <Button key="btn-order" type="primary" onClick={this.onSubmitOrder}>
-            Finish your order
-          </Button>
+            </p>
+          </div>
+          <div
+            style={ {
+              marginTop: 12
+            } }
+          >
+            <p>
+              <strong>
+                Your order total:
+                <span data-test-id="order-summary-delivery-overall-price">
+                  { this.getOrderTotal() }
+                </span>
+                zł
+              </strong>
+            </p>
+          </div>
+          <div
+            style={ {
+              textAlign: 'center',
+              marginTop: 12,
+              height: 32,
+              lineHeight: '32px'
+            } }
+          >
+            <Button key="btn-order" type="primary" onClick={ this.onSubmitOrder }>
+              Finish your order
+            </Button>
+          </div>
         </div>
       </Layout>
     );

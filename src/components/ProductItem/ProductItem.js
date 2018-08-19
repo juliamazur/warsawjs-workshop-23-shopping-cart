@@ -16,6 +16,7 @@ class ProductItem extends Component {
 
     return (
       <Card
+        data-test-id={`product-item`}
         style={{ width: 240 }}
         coverable
         cover={

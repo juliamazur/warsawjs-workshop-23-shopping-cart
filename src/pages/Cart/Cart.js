@@ -26,6 +26,7 @@ class Cart extends Component {
     return (
       <Layout cartSummary={cartSummary}>
         <List
+          data-test-id='cart-products-list'
           className="demo-loadmore-list"
           itemLayout="horizontal"
           dataSource={cart}
@@ -39,6 +40,7 @@ class Cart extends Component {
           )}
         />
         <div
+          data-test-id='cart-actions'
           style={{
             textAlign: "center",
             marginTop: 12,

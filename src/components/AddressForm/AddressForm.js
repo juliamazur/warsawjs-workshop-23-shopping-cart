@@ -96,7 +96,7 @@ class AddressForm extends Component {
                 message: "Please select your country of residence"
               }
             ]
-          })(<Cascader options={countries} />)}
+          })(<Cascader options={countries} data-test-id="address-form-country" />)}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button onClick={onBackButtonPress}>Go back</Button>

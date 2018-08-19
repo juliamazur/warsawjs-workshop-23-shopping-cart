@@ -26,11 +26,13 @@ class DeliveryMethod extends Component {
 
     return (
       <Layout cartSummary={cartSummary}>
-        <h2>Select delivery method</h2>
-        <DeliveryMethodForm
-          onBackButtonPress={this.onBackButtonPress}
-          onFormSubmit={this.onFormSubmit}
-        />
+        <div data-test-id="delivery-method">
+          <h2>Select delivery method</h2>
+          <DeliveryMethodForm
+            onBackButtonPress={this.onBackButtonPress}
+            onFormSubmit={this.onFormSubmit}
+          />
+        </div>
       </Layout>
     );
   }

@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Post Delivery",
+    "price": 5
+  },
+  {
+    "name": "Courier Express",
+    "price": 10
+  },
+  {
+    "name": "In store pickup",
+    "price": 0
+  }
+]
+

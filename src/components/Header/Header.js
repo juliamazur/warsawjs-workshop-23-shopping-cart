@@ -23,7 +23,7 @@ const Header = ({ match: { path }, cartSummary }) => (
         <Link to="/">Shop home</Link>
       </Menu.Item>
       <Menu.Item key="/cart" style={{float: 'right'}}>
-        <Link to="/cart"><Icon type="shopping-cart" /> {displayCartSummary(cartSummary)}</Link>
+        <Link to="/cart" data-test-id='cart-summary'><Icon type="shopping-cart" /> {displayCartSummary(cartSummary)}</Link>
       </Menu.Item>
     </Menu>
   </Layout.Header>

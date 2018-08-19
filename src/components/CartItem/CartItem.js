@@ -39,23 +39,29 @@ class CartItem extends Component {
     } = this.props;
 
     const actions = [];
+    actions.push(
+      <div data-test-id="cart-product-item-price">{Math.round(price * this.state.selectedQuantity * 100) / 100}</div>
+    );
     if (!readOnly) {
-      actions.push(
-        <div>{Math.round(price * this.state.selectedQuantity * 100) / 100}</div>
-      );
       actions.push(<a onClick={() => onRemoveFromCart(id)}>remove</a>);
     }
 
+    const itemDescription = (<React.Fragment>
+      <span>Price per unit:</span>
+      <span data-test-id="cart-product-item-price-per-unit">{price}</span>zł
+    </React.Fragment>)
+
     return (
-      <List.Item actions={actions}>
+      <List.Item actions={actions} data-test-id={`cart-product-item`}>
         <List.Item.Meta
           avatar={<Avatar src={`${process.env.PUBLIC_URL}/images/${image}`} />}
           title={<a>{title}</a>}
-          description={`Price per unit: ${price}zł`}
+          description={itemDescription}
         />
         {!readOnly && (
           <div>
             <Button
+              data-test-id="cart-product-item-decrease"
               shape="circle"
               icon="minus"
               onClick={this.decreaseQuantity}
@@ -64,10 +70,16 @@ class CartItem extends Component {
               {this.state.selectedQuantity}
             </strong>
             <Button
+              data-test-id="cart-product-item-increase"
               shape="circle"
               icon="plus"
               onClick={this.increaseQuantity}
             />
+          </div>
+        )}
+        {readOnly && (
+          <div>
+            Number of units: {this.state.selectedQuantity}
           </div>
         )}
       </List.Item>

@@ -1,7 +1,7 @@
-describe("App", function() {
-  it("loads correctly", function() {
-    cy.visit("/");
+describe('App', function() {
+  it('loads correctly', function() {
+    cy.visit('/');
 
-    cy.contains("Shop home");
+    cy.contains('Shop home');
   });
 });

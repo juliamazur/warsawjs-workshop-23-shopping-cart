@@ -5,7 +5,7 @@ import { ProductItem } from "..";
 
 const ProductsList = ({ products, onAddToCart }) => {
   return (
-    <div>
+    <div data-test-id='products-list'>
       {chunk(products, 4).map((row, i) => (
         <Row
           type="flex"

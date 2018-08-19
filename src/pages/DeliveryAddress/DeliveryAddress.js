@@ -21,11 +21,13 @@ class DeliveryAddress extends Component {
 
     return (
       <Layout cartSummary={cartSummary}>
-        <h2>Enter your delivery address</h2>
-        <AddressForm
-          onBackButtonPress={this.onBackButtonPress}
-          onFormSubmit={this.onFormSubmit}
-        />
+        <div data-test-id="address-form">
+          <h2>Enter your delivery address</h2>
+          <AddressForm
+            onBackButtonPress={this.onBackButtonPress}
+            onFormSubmit={this.onFormSubmit}
+          />
+        </div>
       </Layout>
     );
   }
