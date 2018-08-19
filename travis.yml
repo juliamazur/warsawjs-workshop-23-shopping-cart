@@ -7,5 +7,7 @@ cache:
   - ~/.cache
 install:
 - npm ci
+before_script:
+- npm i
 script:
 - $(npm bin)/cypress run --record
