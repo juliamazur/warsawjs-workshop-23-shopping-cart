@@ -71,6 +71,177 @@ or NPM
 npm run test
 ```
 
+Tips and recipes
+-
+
+#### Tests are located in `cypress/integration` folder
+
+Tests are located in `cypress/integration` folder and should be named with `.spec.js` suffix. Example: `RegistrationPage.spec.js`
+
+#### One file contains one set of tests and consists of `describe` and `it` blocks
+
+`RegistrationPage.spec.js`
+```javascript
+describe("Registration", function() {
+  it("can successfuly register", function() {
+    // First test
+  });
+  
+  it("shows validation errors", function() {
+    // Second test
+  });
+});
+```
+
+#### Prefer interacting with elements through `data-test-id` attributes you add rather than css selectors
+
+This way you make your tests less brittle.
+
+Let's say you have a form 
+```html
+<form class="form inline">
+  ...
+</form>
+```
+So instead of 
+```javascript
+cy.get(".form") // this can be any form on the page, right?
+```
+Add a descriptive `data-test-id` attribute and use it in your test
+```html
+<form class="form inline" data-test-id="registration-form">
+  ...
+</form>
+```
+```javascript
+cy.get("[data-test-id=registration-form]")
+```
+
+#### Identify reusable steps and extract them to commands
+
+Cypress has a concept of commands, which lets you to reuse certain logic in multiple tests without repeatably using same parts of code. They're located in `cypress/support/commands.js` file.
+
+Example: let's say you have a list of items that can change in multiple ways and you have several test cases interacting with it and asserting the same:
+
+```javascript
+describe("Items list", function() {
+  it("contains added item", function() {
+    // ... some test logic here
+    cy.get(".my-list").should("contain", 'Item one');
+  });
+  
+  it("contains another item", function() {
+    // ... another test logic here
+    cy.get(".my-list").should("contain", 'Item two');
+  });
+  
+  it("contains some other items", function() {
+    // ... another test logic here
+    cy.get(".my-list").should("contain", 'Item three');
+    cy.get(".my-list").should("contain", 'Item four');
+    cy.get(".my-list").should("contain", 'Item five');
+  });
+});
+```
+
+You can create a command, give it a name and reuse:
+```javascript
+Cypress.Commands.add("listContains", name => {
+  return cy.get(".list").should("contain", name);
+});
+```
+
+And the usage will look like:
+```javascript
+describe("Items list", function() {
+  it("contains added item", function() {
+    // ... some test logic here
+    cy.listContains('Item one');
+  });
+  
+  it("contains another item", function() {
+    // ... another test logic here
+    cy.listContains('Item two');
+  });
+  
+  it("contains some other items", function() {
+    // ... another test logic here
+    cy.listContains('Item three');
+    cy.listContains('Item four');
+    cy.listContains('Item five');
+  });
+});
+```
+
+Please note it's very simple example but demonstrates the idea.
+
+Another example: filling a form:
+
+You can create a command which takes an object with values as a param and fills the form for you:
+
+```javascript
+Cypress.Commands.add("fillLoginForm", user => {
+  cy.get('input[id="username"]').type(user.username);
+  cy.get('input[id="password"]').type(user.password);
+  cy.get("Button").contains("Login").click();
+});
+```
+And then use it in your test:
+```javascript
+cy.fillLoginForm({ username: 'exampleuser', password 'secretpassword' });
+```
+
+#### Use `beforeEach` for repeatable actions that needs to be taken to prepare the app before testing something else
+
+Example: testing a page that's shown after loggin-in.
+
+```javascript
+describe("User area", function() {
+  it("contains something", function() {
+    cy.fillLoginForm({ username: 'exampleuser', password 'secretpassword' });
+    cy.listContains('Item one');
+  });
+  
+  it("contains something else", function() {
+    cy.fillLoginForm({ username: 'exampleuser', password 'secretpassword' });
+    cy.listContains('Item two');
+  });
+  
+  it("contains some other items", function() {
+    cy.fillLoginForm({ username: 'exampleuser', password 'secretpassword' });
+    cy.listContains('Item three');
+    cy.listContains('Item four');
+    cy.listContains('Item five');
+  });
+});
+```
+
+You can refactor it and make it look like the following:
+```javascript
+describe("User area", function() {
+  beforeEach(() => {
+    cy.fillLoginForm({ username: 'exampleuser', password 'secretpassword' });
+  });
+  
+  it("contains something", function() {
+    cy.listContains('Item one');
+  });
+  
+  it("contains something else", function() {
+    cy.listContains('Item two');
+  });
+  
+  it("contains some other items", function() {
+    cy.listContains('Item three');
+    cy.listContains('Item four');
+    cy.listContains('Item five');
+  });
+});
+```
+
+Code in `beforeEach` will be executed before each test case in this scenario.
+Other available hooks: `beforeAll`, `afterEach`, `afterAll`.
+
 Warmup
 -
 1. Create a test which finds a text on the page (for example a product name)
